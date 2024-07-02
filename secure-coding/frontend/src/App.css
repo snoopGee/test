@@ -1,0 +1,10 @@
+
+table, tr, td {
+  font-size: medium;
+}
+
+th {
+  width: 150px;
+  background-color: black;
+  padding: 5px;
+}

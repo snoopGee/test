@@ -1,0 +1,39 @@
+version: "3"
+services:
+  mongo:
+    build:
+      context: ./db
+    container_name: docker-mern-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: ./backend   
+    container_name: docker-mern-backend
+    ports:
+      - "4000:4000"       
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - mongo
+    restart: always
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    container_name: docker-mern-nginx
+    ports:
+      - "80:80" 
+      - "443:443"          
+    depends_on:
+      - backend
+    restart: always
+    volumes:
+      - /var/log/nginx/:/var/log/nginx/
+
+volumes:
+  mongo_data:
